@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HCP Engagement Intelligence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+<div class="app-shell">
+<aside class="sidebar" id="sidebar">
+  <div class="brand">
+    <div class="brand-icon">⌁</div>
+    <div>
+      <h2>HCP Analytics</h2>
+      <p>HCP Intelligence</p>
+    </div>
+  </div>
+  <div class="sidebar-insight">
+    <div class="eyebrow">⚡ NEXT-BEST CHANNEL</div>
+    <strong id="predictionCount">AI-powered recommendations</strong>
+    <div class="insight-line"><span>Model Accuracy</span><b>94.2%</b></div>
+  </div>
+  <p class="menu-title">MAIN MENU</p>
+  <nav id="sidebarNav">
+    <a class="active" href="#overview">▦ <span>Dashboard Overview</span></a>
+    <a href="#engagement">◔ <span>Engagement Analytics</span></a>
+    <a href="#channels">⌁ <span>Channel Analytics</span></a>
+    <a href="#allocation">↗ <span>Allocation Strategy</span></a>
+  </nav>
+  <div class="sidebar-bottom">
+    <p class="menu-title">SYSTEM</p>
+    <button id="refreshBtn" class="side-button">↻ Refresh data</button>
+  </div>
+</aside>
+<main class="main">
+  <header class="topbar">
+    <button id="mobileMenuBtn" class="mobile-menu-btn" aria-label="Toggle Menu">☰</button>
+    <div class="search-wrap">
+      <span>⌕</span>
+      <input id="hcpSearch" placeholder="Search HCP by name or HCP ID..." autocomplete="off">
+      <div id="searchResults" class="search-results"></div>
+    </div>
+    <div class="freshness"><i></i><span id="lastUpdated">Loading data...</span></div>
+  </header>
+  <section class="hero" id="overview">
+    <div>
+      <div class="pill">✧ AI Omnichannel Intelligence</div>
+      <h1>HCP Engagement Dashboard</h1>
+      <p>Real-time analytics, predictive channel recommendations, and healthcare professional interaction tracking.</p>
+    </div>
+    <div class="live"><i></i><div><b>Live Sync</b><span id="apiStatusText">API connected</span></div></div>
+  </section>
+  <section id="errorBox" class="error hidden">Unable to load data. <button onclick="loadDashboard()">Retry</button></section>
+  <section class="kpi-grid" id="kpis"></section>
+  <section class="grid-2" id="engagement">
+    <article class="card chart-card">
+      <div class="section-head"><div><p>ENGAGEMENT OVERVIEW</p><h3>Overall Engagement</h3></div></div>
+      <div class="chart-holder"><canvas id="engagementChart"></canvas></div>
+    </article>
+    <article class="card chart-card">
+      <div class="section-head"><div><p>HYBRID SCORE</p><h3>Engagement Score Distribution</h3></div></div>
+      <div class="chart-holder"><canvas id="scoreChart"></canvas></div>
+    </article>
+  </section>
+  <section class="card wide" id="channels">
+    <div class="section-head"><div><p>CHANNEL ANALYTICS</p><h3>Channel Effectiveness</h3><small>Aggregated HCP channel engagement probabilities</small></div></div>
+    <div class="channel-bars" id="channelBars"></div>
+  </section>
+  <section class="allocation-section" id="allocation">
+    <div class="allocation-copy">
+      <div class="eyebrow">⚡ AI PREDICTIVE INSIGHT</div>
+      <h2>Baseline vs Model-Driven<br>Channel Allocation</h2>
+      <p>Compare equal baseline allocation with model-driven allocation based on aggregated HCP channel engagement probabilities.</p>
+    </div>
+    <div class="allocation-chart"><canvas id="allocationChart"></canvas></div>
+  </section>
+</main>
+</div>
+<script src="script.js"></script>
+</body>
+</html>
