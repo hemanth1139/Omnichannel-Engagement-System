@@ -305,7 +305,7 @@ function initNavigation() {
 
 document.getElementById('hcpSearch').addEventListener('input', e => {
   clearTimeout(searchTimer);
-  searchTimer = setTimeout(() => searchHcp(e.target.value.trim()), 150);
+  searchTimer = setTimeout(() => searchHcp(e.target.value.trim()), 300);
 });
 
 document.addEventListener('click', e => {
