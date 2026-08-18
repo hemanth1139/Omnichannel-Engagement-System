@@ -63,7 +63,7 @@ def search_hcps(db: Session, query: str = None) -> List[HcpDetailResponse]:
             )
         )
     
-    records = q.limit(50).all()
+    records = q.limit(500).all()
     results = []
     for profile, model_out in records:
         name_parts = [p for p in [profile.first_name, profile.last_name] if p]

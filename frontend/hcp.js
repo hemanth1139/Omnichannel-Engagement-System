@@ -93,10 +93,6 @@ function render(h) {
 
   document.getElementById('bestChannel').textContent = val(h.next_best_channel);
   document.getElementById('reason').textContent = val(h.recommendation_reason);
-  document.getElementById('additionalInfo').innerHTML = [
-    info('HCP Status', h.hcp_status),
-    info('Preferred Language', h.preferred_language)
-  ].join('');
 
   loadChart(h);
 }

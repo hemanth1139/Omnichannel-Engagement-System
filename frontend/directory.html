@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HCP Directory | HCP Intelligence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+<div class="app-shell">
+<aside class="sidebar" id="sidebar">
+  <div class="brand">
+    <div>
+      <h2>Omnichannel Engagement System</h2>
+    </div>
+  </div>
+
+  <nav id="sidebarNav">
+    <a href="index.html#overview">▦ <span>Dashboard Overview</span></a>
+    <a href="index.html#engagement">◔ <span>Engagement Analytics</span></a>
+    <a href="index.html#channels">⌁ <span>Channel Analytics</span></a>
+    <a class="active" href="directory.html">👥 <span>HCP Directory</span></a>
+  </nav>
+  <div class="sidebar-bottom">
+    <p class="menu-title">SYSTEM</p>
+    <button id="refreshDirectoryBtn" class="side-button">↻ Refresh data</button>
+  </div>
+</aside>
+<main class="main">
+  <header class="topbar">
+    <button id="mobileMenuBtn" class="mobile-menu-btn" aria-label="Toggle Menu">☰</button>
+    <div class="search-wrap">
+      <span>⌕</span>
+      <input id="hcpSearch" placeholder="Search HCP by name or HCP ID..." autocomplete="off">
+      <div id="searchResults" class="search-results"></div>
+    </div>
+    <div class="freshness"><i></i><span id="lastUpdated">Loading data...</span></div>
+  </header>
+  
+  <section class="hero" id="overview">
+    <div>
+      <div class="pill">✧ Directory</div>
+      <h1>HCP Directory</h1>
+      <p>Browse all registered healthcare professionals, view their core details, and access full predictive engagement profiles.</p>
+    </div>
+    <div class="live"><i></i><div><b>Live Sync</b><span id="apiStatusText">API connected</span></div></div>
+  </section>
+  
+  <section id="directoryErrorBox" class="error hidden">Unable to load data. <button onclick="loadDirectory()">Retry</button></section>
+  
+  <section class="directory-container">
+    <div class="directory-grid" id="directoryGrid">
+        <!-- Cards will be dynamically injected here -->
+    </div>
+  </section>
+  
+</main>
+</div>
+<script src="script.js"></script>
+<script src="directory.js"></script>
+</body>
+</html>

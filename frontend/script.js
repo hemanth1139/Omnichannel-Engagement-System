@@ -132,16 +132,20 @@ function makeCharts(d) {
     }));
   }
 
-  const scores = d.score_distribution || {};
+  const rawScores = d.score_distribution || {};
+  const isArray = Array.isArray(rawScores);
+  const scoreLabels = isArray ? rawScores.map(x => x.bucket || x.Bucket) : Object.keys(rawScores);
+  const scoreValues = isArray ? rawScores.map(x => x.count || x.Count) : Object.values(rawScores);
+
   const scoreCanvas = document.getElementById('scoreChart');
   if (scoreCanvas) {
     charts.push(new Chart(scoreCanvas, {
       type: 'bar',
       data: {
-        labels: Object.keys(scores),
+        labels: scoreLabels,
         datasets: [{
           label: 'HCP count',
-          data: Object.values(scores),
+          data: scoreValues,
           backgroundColor: '#5c61b8',
           borderRadius: 9,
           borderSkipped: false
@@ -167,8 +171,8 @@ function makeCharts(d) {
       data: {
         labels: channels,
         datasets: [
-          { label: 'Baseline', data: [25, 25, 25, 25], backgroundColor: '#bcb5df', borderRadius: 7 },
-          { label: 'Model-Driven', data: channels.map(c => pct(alloc[c] ?? alloc[c.toLowerCase()])), backgroundColor: '#ffffff', borderRadius: 7 }
+          { label: 'Baseline Spend', data: [25, 25, 25, 25], backgroundColor: '#bcb5df', borderRadius: 7 },
+          { label: 'Optimized Cost', data: channels.map(c => pct(alloc[c] ?? alloc[c.toLowerCase()])), backgroundColor: '#ffffff', borderRadius: 7 }
         ]
       },
       options: {
@@ -214,7 +218,14 @@ function render(d) {
 async function loadDashboard() {
   document.getElementById('errorBox').classList.add('hidden');
   document.getElementById('kpis').innerHTML = Array(5).fill('<article class="card kpi loading"><p>Loading</p><h2>000</h2></article>').join('');
-  const data = await api('/api/dashboard');
+  let data = await api('/api/dashboard');
+  
+  if (data && data.total_hcps === 0) {
+    // If the database is completely empty, fallback to demo mode so the UI isn't blank
+    data = handleMock('/api/dashboard');
+    updateSyncStatus(false); 
+  }
+  
   render(data);
 }
 
@@ -314,7 +325,10 @@ document.addEventListener('click', e => {
   }
 });
 
-document.getElementById('refreshBtn').addEventListener('click', loadDashboard);
+const refreshBtn = document.getElementById('refreshBtn');
+if (refreshBtn) refreshBtn.addEventListener('click', loadDashboard);
 
 initNavigation();
-loadDashboard();
+if (document.getElementById('kpis')) {
+  loadDashboard();
+}
