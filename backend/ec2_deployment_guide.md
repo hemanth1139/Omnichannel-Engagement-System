@@ -147,3 +147,32 @@ We need to tell the EC2 server how to keep your backend running 24/7.
 
 > [!IMPORTANT]
 > **You are now done!** From now on, whenever you push code changes to the `backend/` folder on your `main` branch, GitHub Actions will securely log into your EC2 server, pull the latest code, and restart the `hcp-backend` service automatically.
+
+## Step 6: Connecting to RDS Database (Later)
+
+When you are ready with your dataset and have created your RDS database, here is exactly how you will add it to the EC2 server:
+
+1. **Get your RDS Credentials:** From AWS RDS, you will need the Endpoint (host), port (usually `5432` for PostgreSQL), username, password, and database name.
+2. **SSH into your EC2 server:**
+   ```bash
+   ssh -i /path/to/your-key.pem ec2-user@<your-ec2-ip>
+   ```
+3. **Navigate to your backend folder:**
+   ```bash
+   cd your-existing-repo/backend
+   ```
+4. **Edit the `.env` file:**
+   ```bash
+   nano .env
+   ```
+5. **Add the connection string:** Inside the file, add or update the `DATABASE_URL` variable to point to your new RDS instance. It will look something like this:
+   ```env
+   DATABASE_URL=postgresql://my_username:my_password@my-rds-database.abcdefg.us-east-1.rds.amazonaws.com:5432/my_database_name
+   ```
+   *Save the file and exit (in nano, press `Ctrl+O`, `Enter`, then `Ctrl+X`).*
+6. **Restart the app to apply the changes:**
+   ```bash
+   sudo systemctl restart hcp-backend
+   ```
+
+That's it! As soon as you run that restart command, your backend will immediately start pulling data from the new RDS database.
