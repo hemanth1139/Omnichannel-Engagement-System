@@ -1,0 +1,39 @@
+name: Deploy Backend to EC2
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'backend/**'  # Only trigger if files in the backend folder change!
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Deploy to EC2 via SSH
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ec2-user  # Or 'ubuntu' if using Ubuntu EC2
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            # 1. Navigate to the repository folder on the server
+            cd /home/ec2-user/your-existing-repo
+            
+            # 2. Pull the latest code from GitHub
+            git pull origin main
+            
+            # 3. Navigate into the backend folder
+            cd backend
+            
+            # 4. Activate the virtual environment and install dependencies
+            source venv/bin/activate
+            pip install -r requirements.txt
+            
+            # 5. Restart the backend service
+            sudo systemctl restart hcp-backend
