@@ -24,6 +24,6 @@ app.add_middleware(
 )
 
 # Include Routers
-app.include_router(health.router, prefix="/api", tags=["Health"])
-app.include_router(dashboard.router, prefix="/api", tags=["Dashboard"])
-app.include_router(hcps.router, prefix="/api", tags=["HCP"])
+app.include_router(health.router, tags=["Health"])
+app.include_router(dashboard.router, tags=["Dashboard"])
+app.include_router(hcps.router, tags=["HCP"])
