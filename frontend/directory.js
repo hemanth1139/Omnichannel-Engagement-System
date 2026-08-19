@@ -70,7 +70,7 @@ function renderDirectory(hcps, reset) {
     const levelClass = level.toLowerCase();
     
     return `
-      <a href="hcp.html?id=${encodeURIComponent(h.hcp_id || h.HCP_ID)}" class="hcp-dir-card">
+      <a href="hcp.html?id=${encodeURIComponent(h.hcp_id || h.HCP_ID)}" class="medielite-card hcp-dir-card">
         <div class="hcp-dir-header">
           <div class="hcp-dir-avatar">${initial}</div>
           <div class="hcp-dir-title">
@@ -86,7 +86,7 @@ function renderDirectory(hcps, reset) {
         <hr class="dashed-line" style="margin: 5px 0 15px; width: 100%;">
         <div class="hcp-dir-footer">
           <div class="dir-score">
-            <span>Hybrid Score</span>
+            <span>Engagement Score</span>
             <strong>${score}</strong>
           </div>
           <div class="dir-badge level-${levelClass}">${level}</div>
