@@ -41,7 +41,7 @@ function renderKpis(d) {
     ['HIGH ENGAGEMENT', d.high_engagement, 'High engagement HCPs', '↗'],
     ['MEDIUM ENGAGEMENT', d.medium_engagement, 'Medium engagement HCPs', '≈'],
     ['LOW ENGAGEMENT', d.low_engagement, 'Low engagement HCPs', '↘'],
-    ['AVG HYBRID SCORE', (d.average_engagement_score * 100).toFixed(1), 'Backend-calculated score', '⌁']
+    ['AVG HYBRID SCORE', num(d.average_engagement_score).toFixed(1), 'Backend-calculated score', '⌁']
   ];
   document.getElementById('kpis').innerHTML = data.map(([t, v, s, i]) => `
     <article class="card kpi">
