@@ -279,14 +279,18 @@ function initNavigation() {
   }, { passive: true });
 }
 
-document.getElementById('hcpSearch').addEventListener('input', e => {
-  clearTimeout(searchTimer);
-  searchTimer = setTimeout(() => searchHcp(e.target.value.trim()), 300);
-});
+const hcpSearchEl = document.getElementById('hcpSearch');
+if (hcpSearchEl) {
+  hcpSearchEl.addEventListener('input', e => {
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(() => searchHcp(e.target.value.trim()), 300);
+  });
+}
 
 document.addEventListener('click', e => {
-  if (!e.target.closest('.search-wrap')) {
-    document.getElementById('searchResults').classList.remove('show');
+  const box = document.getElementById('searchResults');
+  if (box && !e.target.closest('.search-wrap')) {
+    box.classList.remove('show');
   }
 });
 

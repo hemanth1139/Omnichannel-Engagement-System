@@ -24,14 +24,14 @@
     </div>
     
     <nav class="top-nav" id="sidebarNav">
-      <a class="active" href="#overview">Overview +</a>
-      <a href="#engagement">Engagement +</a>
-      <a href="#channels">Channels +</a>
-      <a href="directory.html">Directory +</a>
+      <a class="active" href="#overview">Overview</a>
+      <a href="#engagement">Engagement</a>
+      <a href="#channels">Channels</a>
+      <a href="directory.html">Directory</a>
     </nav>
     
     <div class="nav-actions">
-      <button class="pill-btn cyan" id="refreshBtn">Refresh <span class="arrow-circle">→</span></button>
+      <button class="pill-btn cyan" id="refreshBtn">Refresh</button>
       <button id="mobileMenuBtn" class="mobile-menu-btn" aria-label="Toggle Menu">☰</button>
     </div>
   </div>
@@ -39,8 +39,9 @@
 
 <main class="main-content">
   
-  <!-- MediElite Split Hero Section -->
+  <!-- Full-Screen Hero Section -->
   <section class="hero-section" id="overview">
+    <!-- Left: Text Content -->
     <div class="hero-content">
       <h1>Omnichannel<br><span class="highlight">Engagement System</span></h1>
       <p>Real-time engagement insights and predictive channel recommendations for HCPs.</p>
@@ -51,7 +52,11 @@
       </div>
     </div>
     
-    <div class="hero-graphics">
+    <!-- Right: Full image panel -->
+    <div class="hero-image-panel">
+      <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=900&q=90" alt="Analytics Dashboard" class="hero-img" />
+
+      <!-- Floating stat: engagement % -->
       <div class="floating-stat float-1">
         <div class="stat-circle">
           <h2 id="heroStatPercent">--%</h2>
@@ -60,7 +65,8 @@
           <p>High<br>Engagement</p>
         </div>
       </div>
-      
+
+      <!-- Floating stat: HCP count -->
       <div class="floating-stat float-2">
         <div class="stat-avatars">👥</div>
         <div class="stat-text">
@@ -70,14 +76,7 @@
     </div>
   </section>
 
-  <!-- Large Search Bar Component -->
-  <div class="search-container">
-    <div class="search-wrap-large">
-      <span class="search-icon">⌕</span>
-      <input id="hcpSearch" placeholder="Search HCP by name or HCP ID..." autocomplete="off">
-      <div id="searchResults" class="search-results"></div>
-    </div>
-  </div>
+  <!-- Search bar removed from hero per design update -->
 
   <section id="errorBox" class="error hidden">Unable to load data. <button onclick="loadDashboard()">Retry</button></section>
   
