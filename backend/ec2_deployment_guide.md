@@ -176,3 +176,58 @@ When you are ready with your dataset and have created your RDS database, here is
    ```
 
 That's it! As soon as you run that restart command, your backend will immediately start pulling data from the new RDS database.
+
+## Step 7: Adding Free HTTPS (SSL) without Buying a Domain
+
+If your frontend is hosted on AWS Amplify, Vercel, or Netlify, it will be forced to use HTTPS. Browsers will block your frontend from talking to your EC2 backend unless the backend also uses HTTPS. 
+
+Instead of buying a domain name, you can use the free `nip.io` service to get a domain name for your EC2 instance instantly!
+
+### 1. Install Nginx and Certbot
+SSH into your EC2 server and run these commands to install the web server (Nginx) and the free SSL generator (Certbot):
+```bash
+sudo yum install nginx -y
+sudo yum install certbot python3-certbot-nginx -y
+```
+
+### 2. Configure Nginx
+We need to tell Nginx to take internet traffic and pass it to your FastAPI backend (running on port 8000).
+```bash
+sudo nano /etc/nginx/conf.d/fastapi.conf
+```
+Paste the following configuration into the file, replacing `13.235.49.213` with your actual EC2 IP:
+```nginx
+server {
+    listen 80;
+    server_name 13.235.49.213.nip.io;
+
+    location / {
+        proxy_pass http://127.0.0.1:8000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+```
+Save and exit (`Ctrl+O`, `Enter`, `Ctrl+X`).
+
+### 3. Start Nginx
+```bash
+sudo systemctl enable nginx
+sudo systemctl restart nginx
+```
+
+### 4. Generate the Free SSL Certificate
+Run Certbot and tell it your new free domain name. It will automatically reconfigure Nginx to use HTTPS!
+```bash
+sudo certbot --nginx -d 13.235.49.213.nip.io
+```
+Follow the prompts (enter your email, agree to the terms). 
+
+### 5. Update your Frontend
+Go back to your `frontend/script.js` and `frontend/hcp.js` files. Update the `API_BASE_URL` to your new secure domain:
+```javascript
+const API_BASE_URL = 'https://13.235.49.213.nip.io';
+```
+Push that change to AWS Amplify, and your Mixed Content error will be gone forever!

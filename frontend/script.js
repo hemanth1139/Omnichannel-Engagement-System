@@ -1,4 +1,4 @@
-const API_BASE_URL = window.API_BASE_URL || localStorage.getItem('HCP_API_BASE_URL') || 'http://13.235.49.213:8000';
+const API_BASE_URL = window.API_BASE_URL || localStorage.getItem('HCP_API_BASE_URL') || 'https://13.235.49.213.nip.io';
 let charts = [];
 let searchTimer;
 const channels = ['Email', 'Website', 'Webinar', 'Sales_Rep'];
@@ -172,7 +172,7 @@ function render(d) {
 async function loadDashboard() {
   document.getElementById('errorBox').classList.add('hidden');
   document.getElementById('kpis').innerHTML = Array(5).fill('<article class="card kpi loading"><p>Loading</p><h2>000</h2></article>').join('');
-  
+
   try {
     let data = await api('/api/dashboard');
     render(data);

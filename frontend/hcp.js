@@ -1,4 +1,4 @@
-const API_BASE_URL = window.API_BASE_URL || localStorage.getItem('HCP_API_BASE_URL') || 'http://13.235.49.213:8000';
+const API_BASE_URL = window.API_BASE_URL || localStorage.getItem('HCP_API_BASE_URL') || 'https://13.235.49.213.nip.io';
 let comparison;
 
 async function api(path) {
