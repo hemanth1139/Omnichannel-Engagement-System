@@ -93,7 +93,6 @@ function renderKpis(d) {
   ];
   document.getElementById('kpis').innerHTML = data.map(([t, v, s, i]) => `
     <article class="card kpi">
-      <div class="kpi-icon">${i}</div>
       <p>${t}</p>
       <h2>${v ?? '—'}</h2>
       <small>${s}</small>
@@ -212,7 +211,10 @@ function render(d) {
   renderKpis(d);
   renderChannels(d);
   makeCharts(d);
-  document.getElementById('lastUpdated').textContent = d.last_updated ? `Updated ${new Date(d.last_updated).toLocaleTimeString()}` : 'Data updated';
+  const lastUpdatedEl = document.getElementById('lastUpdated');
+  if (lastUpdatedEl) {
+    lastUpdatedEl.textContent = d.last_updated ? `Updated ${new Date(d.last_updated).toLocaleTimeString()}` : 'Data updated';
+  }
 }
 
 async function loadDashboard() {

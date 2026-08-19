@@ -15,22 +15,36 @@
 <div class="app-shell">
 <aside class="sidebar" id="sidebar">
   <div class="brand">
-    <div>
+    <img src="logo.png" alt="OES Logo" class="brand-logo" />
+    <div class="brand-text">
       <h2>Omnichannel Engagement System</h2>
     </div>
   </div>
 
   <nav id="sidebarNav">
-    <a class="active" href="#overview">▦ <span>Dashboard Overview</span></a>
-    <a href="#engagement">◔ <span>Engagement Analytics</span></a>
-    <a href="#channels">⌁ <span>Channel Analytics</span></a>
-    <a href="directory.html">👥 <span>HCP Directory</span></a>
+    <a class="active" href="#overview">
+      <span class="nav-icon">▦</span><span class="nav-label">Dashboard Overview</span>
+    </a>
+    <a href="#engagement">
+      <span class="nav-icon">◔</span><span class="nav-label">Engagement Analytics</span>
+    </a>
+    <a href="#channels">
+      <span class="nav-icon">⌁</span><span class="nav-label">Channel Analytics</span>
+    </a>
+    <a href="directory.html">
+      <span class="nav-icon">👥</span><span class="nav-label">HCP Directory</span>
+    </a>
   </nav>
+
   <div class="sidebar-bottom">
     <p class="menu-title">SYSTEM</p>
-    <button id="refreshBtn" class="side-button">↻ Refresh data</button>
+    <button id="refreshBtn" class="side-button">
+      <span class="nav-icon" style="font-size:15px">↻</span>
+      <span class="side-label">Refresh data</span>
+    </button>
   </div>
 </aside>
+
 <main class="main">
   <header class="topbar">
     <button id="mobileMenuBtn" class="mobile-menu-btn" aria-label="Toggle Menu">☰</button>
@@ -39,14 +53,12 @@
       <input id="hcpSearch" placeholder="Search HCP by name or HCP ID..." autocomplete="off">
       <div id="searchResults" class="search-results"></div>
     </div>
-    <div class="freshness"><i></i><span id="lastUpdated">Loading data...</span></div>
   </header>
   <section class="hero" id="overview">
     <div>
       <h1>HCP Engagement Dashboard</h1>
       <p>Real-time analytics, predictive channel recommendations, and healthcare professional interaction tracking.</p>
     </div>
-    <div class="live"><i></i><div><b>Live Sync</b><span id="apiStatusText">API connected</span></div></div>
   </section>
   <section id="errorBox" class="error hidden">Unable to load data. <button onclick="loadDashboard()">Retry</button></section>
   <section class="kpi-grid" id="kpis"></section>
