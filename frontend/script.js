@@ -45,13 +45,12 @@ function renderKpis(d) {
   ];
   document.getElementById('kpis').innerHTML = data.map(([t, v, s, i]) => `
     <article class="medielite-card kpi">
-      <div class="card-icon">${i}</div>
-      <h3>${t}</h3>
-      <p>${s}</p>
-      <hr class="dashed-line">
-      <div class="card-bottom" style="justify-content: flex-start; font-size: 24px; font-weight: 800;">
-        <span style="font-size: 14px; margin-right: 8px;">●</span> ${v ?? '—'}
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+        <h3 style="font-size: 13px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin: 0; font-weight: 700;">${t}</h3>
+        <div class="card-icon" style="width: 40px; height: 40px; font-size: 18px; margin: 0; border-radius: 12px; display: grid; place-items: center;">${i}</div>
       </div>
+      <div style="font-size: 38px; font-weight: 800; color: var(--primary); margin-bottom: 15px;">${v ?? '—'}</div>
+      <div style="font-size: 13px; color: var(--muted); padding-top: 15px; border-top: 1px solid var(--line);">${s}</div>
     </article>
   `).join('');
 }
