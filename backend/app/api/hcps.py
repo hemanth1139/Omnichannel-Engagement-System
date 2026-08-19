@@ -8,11 +8,11 @@ from app.services.hcp_service import get_hcp_by_id, search_hcps
 router = APIRouter()
 
 @router.get("/api/hcps", response_model=List[HcpDetailResponse])
-def get_hcps(query: Optional[str] = None, db: Session = Depends(get_db)):
+def get_hcps(query: Optional[str] = None, skip: int = 0, limit: int = 50, db: Session = Depends(get_db)):
     """
     Search HCPs by query (matches name, id, or specialty).
     """
-    return search_hcps(db, query)
+    return search_hcps(db, query, skip, limit)
 
 @router.get("/api/hcps/{hcp_id}", response_model=HcpDetailResponse)
 def get_hcp_detail(hcp_id: str, db: Session = Depends(get_db)):

@@ -14,7 +14,7 @@ function updateSyncStatus(isLive) {
 async function api(path) {
   try {
     const controller = new AbortController();
-    const id = setTimeout(() => controller.abort(), 400);
+    const id = setTimeout(() => controller.abort(), 8000);
     const r = await fetch(`${API_BASE_URL}${path}`, { signal: controller.signal });
     clearTimeout(id);
     if (!r.ok) throw new Error(`HTTP ${r.status}`);

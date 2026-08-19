@@ -47,7 +47,7 @@ def get_hcp_by_id(db: Session, hcp_id: str) -> HcpDetailResponse:
 from typing import List
 from sqlalchemy import or_
 
-def search_hcps(db: Session, query: str = None) -> List[HcpDetailResponse]:
+def search_hcps(db: Session, query: str = None, skip: int = 0, limit: int = 50) -> List[HcpDetailResponse]:
     q = db.query(HCPProfile, ModelOutput).outerjoin(ModelOutput, HCPProfile.hcp_id == ModelOutput.hcp_id)
     
     if query:
@@ -61,7 +61,7 @@ def search_hcps(db: Session, query: str = None) -> List[HcpDetailResponse]:
             )
         )
     
-    records = q.limit(500).all()
+    records = q.order_by(HCPProfile.hcp_id.asc()).offset(skip).limit(limit).all()
     results = []
     for profile, model_out in records:
         results.append(HcpDetailResponse(
