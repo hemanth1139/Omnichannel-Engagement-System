@@ -69,6 +69,7 @@ function renderDirectory(hcps, reset) {
     const level = h.engagement_level || 'Unknown';
     const levelClass = level.toLowerCase();
     
+    return `
       <a href="hcp.html?id=${encodeURIComponent(h.hcp_id || h.HCP_ID)}" class="hcp-dir-card">
         <div class="hcp-dir-header">
           <div class="hcp-dir-avatar">${initial}</div>

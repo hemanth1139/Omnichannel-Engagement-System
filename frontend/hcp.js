@@ -1,14 +1,4 @@
-const API_BASE_URL = window.API_BASE_URL || localStorage.getItem('HCP_API_BASE_URL') || 'https://13.235.49.213.nip.io';
 let comparison;
-
-async function api(path) {
-  const controller = new AbortController();
-  const id = setTimeout(() => controller.abort(), 1800);
-  const r = await fetch(`${API_BASE_URL}${path}`, { signal: controller.signal });
-  clearTimeout(id);
-  if (!r.ok) throw Error(r.status);
-  return await r.json();
-}
 
 function val(x) { return x === null || x === undefined || x === '' ? 'Not available' : x; }
 function pct(v) { let n = Number(v ?? 0); return n > 0 && n <= 1 ? n * 100 : n; }
@@ -22,7 +12,7 @@ function loadChart(h) {
       labels: ['Historical', 'Predicted', 'Hybrid'],
       datasets: [{
         data: [pct(h.historical_engagement_score), pct(h.predicted_engagement_score), pct(h.hybrid_engagement_score)],
-        backgroundColor: ['#c9cee1', '#7776c6', '#4b3999'],
+        backgroundColor: ['#e2e8f0', '#00c2cb', '#061a3a'],
         borderRadius: 8
       }]
     },
