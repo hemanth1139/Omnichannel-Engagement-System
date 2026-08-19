@@ -31,7 +31,8 @@ class ModelOutput(Base):
 
     # For strict mapping we assume snake_case columns. If columns literally have spaces in Postgres, 
     # you can rename them like: Column("Historical Engagement Score", Float)
-    hcp_id = Column(String, ForeignKey(f"{settings.HCP_PROFILE_TABLE_NAME}.hcp_id"), primary_key=True, index=True)
+    prediction_id = Column(Integer, primary_key=True, autoincrement=True)
+    hcp_id = Column(String, ForeignKey(f"{settings.HCP_PROFILE_TABLE_NAME}.hcp_id"), index=True)
     historical_engagement_score = Column(Float)
     predicted_engagement_score = Column(Float)
     hybrid_engagement_score = Column(Float)
@@ -39,8 +40,9 @@ class ModelOutput(Base):
     email_probability = Column(Float)
     website_probability = Column(Float)
     webinar_probability = Column(Float)
-    veeva_probability = Column(Float)
+    sales_rep_probability = Column(Float)
     next_best_channel = Column(String, index=True)
-    recommendation_reason = Column(String)
+    recommended_reason = Column(String)
+    prediction_timestamp = Column(DateTime)
 
     hcp_profile = relationship("HCPProfile", back_populates="model_output")

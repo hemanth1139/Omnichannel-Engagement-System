@@ -3,7 +3,8 @@ from typing import Optional
 
 class HcpDetailResponse(BaseModel):
     hcp_id: str
-    name: str
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
     specialty: Optional[str] = None
     sub_specialty: Optional[str] = None
     organization_type: Optional[str] = None
@@ -21,7 +22,7 @@ class HcpDetailResponse(BaseModel):
     email_probability: Optional[float] = None
     website_probability: Optional[float] = None
     webinar_probability: Optional[float] = None
-    veeva_probability: Optional[float] = None
+    sales_rep_probability: Optional[float] = None
     
     next_best_channel: Optional[str] = None
-    recommendation_reason: Optional[str] = None
+    recommended_reason: Optional[str] = None

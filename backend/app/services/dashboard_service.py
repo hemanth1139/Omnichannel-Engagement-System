@@ -24,8 +24,8 @@ def get_dashboard_data(db: Session) -> DashboardResponse:
             average_engagement_score=0.0,
             engagement_distribution=EngagementDistribution(High=0, Medium=0, Low=0),
             score_distribution=[],
-            channel_effectiveness=ChannelEffectiveness(Email=0.0, Website=0.0, Webinar=0.0, Veeva=0.0),
-            channel_allocation=ChannelAllocation(Email=0.0, Website=0.0, Webinar=0.0, Veeva=0.0),
+            channel_effectiveness=ChannelEffectiveness(Email=0.0, Website=0.0, Webinar=0.0, Sales_Rep=0.0),
+            channel_allocation=ChannelAllocation(Email=0.0, Website=0.0, Webinar=0.0, Sales_Rep=0.0),
             last_updated=datetime.utcnow().isoformat()
         )
 
@@ -72,23 +72,23 @@ def get_dashboard_data(db: Session) -> DashboardResponse:
         func.avg(ModelOutput.email_probability),
         func.avg(ModelOutput.website_probability),
         func.avg(ModelOutput.webinar_probability),
-        func.avg(ModelOutput.veeva_probability)
+        func.avg(ModelOutput.sales_rep_probability)
     ).first()
 
     email_avg = avg_probs[0] or 0.0
     website_avg = avg_probs[1] or 0.0
     webinar_avg = avg_probs[2] or 0.0
-    veeva_avg = avg_probs[3] or 0.0
+    sales_rep_avg = avg_probs[3] or 0.0
 
     # 7. Channel Allocation (Model-Driven)
-    total_prob = email_avg + website_avg + webinar_avg + veeva_avg
+    total_prob = email_avg + website_avg + webinar_avg + sales_rep_avg
     if total_prob > 0:
         email_alloc = email_avg / total_prob
         website_alloc = website_avg / total_prob
         webinar_alloc = webinar_avg / total_prob
-        veeva_alloc = veeva_avg / total_prob
+        sales_rep_alloc = sales_rep_avg / total_prob
     else:
-        email_alloc = website_alloc = webinar_alloc = veeva_alloc = 0.0
+        email_alloc = website_alloc = webinar_alloc = sales_rep_alloc = 0.0
 
     # 8. Last Updated
     last_updated_record = db.query(func.max(HCPProfile.updated_at)).scalar()
@@ -103,10 +103,10 @@ def get_dashboard_data(db: Session) -> DashboardResponse:
         engagement_distribution=EngagementDistribution(**eng_dist),
         score_distribution=score_dist_items,
         channel_effectiveness=ChannelEffectiveness(
-            Email=email_avg, Website=website_avg, Webinar=webinar_avg, Veeva=veeva_avg
+            Email=email_avg, Website=website_avg, Webinar=webinar_avg, Sales_Rep=sales_rep_avg
         ),
         channel_allocation=ChannelAllocation(
-            Email=email_alloc, Website=website_alloc, Webinar=webinar_alloc, Veeva=veeva_alloc
+            Email=email_alloc, Website=website_alloc, Webinar=webinar_alloc, Sales_Rep=sales_rep_alloc
         ),
         last_updated=last_updated
     )

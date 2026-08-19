@@ -16,12 +16,10 @@ def get_hcp_by_id(db: Session, hcp_id: str) -> HcpDetailResponse:
 
     profile, model_out = record
 
-    name_parts = [p for p in [profile.first_name, profile.last_name] if p]
-    full_name = " ".join(name_parts)
-
     return HcpDetailResponse(
         hcp_id=profile.hcp_id,
-        name=full_name,
+        first_name=profile.first_name,
+        last_name=profile.last_name,
         specialty=profile.specialty,
         sub_specialty=profile.sub_specialty,
         organization_type=profile.organization_type,
@@ -40,10 +38,10 @@ def get_hcp_by_id(db: Session, hcp_id: str) -> HcpDetailResponse:
         email_probability=model_out.email_probability if model_out else None,
         website_probability=model_out.website_probability if model_out else None,
         webinar_probability=model_out.webinar_probability if model_out else None,
-        veeva_probability=model_out.veeva_probability if model_out else None,
+        sales_rep_probability=model_out.sales_rep_probability if model_out else None,
         
         next_best_channel=model_out.next_best_channel if model_out else None,
-        recommendation_reason=model_out.recommendation_reason if model_out else None,
+        recommended_reason=model_out.recommended_reason if model_out else None,
     )
 
 from typing import List
@@ -66,12 +64,10 @@ def search_hcps(db: Session, query: str = None) -> List[HcpDetailResponse]:
     records = q.limit(500).all()
     results = []
     for profile, model_out in records:
-        name_parts = [p for p in [profile.first_name, profile.last_name] if p]
-        full_name = " ".join(name_parts)
-        
         results.append(HcpDetailResponse(
             hcp_id=profile.hcp_id,
-            name=full_name,
+            first_name=profile.first_name,
+            last_name=profile.last_name,
             specialty=profile.specialty,
             sub_specialty=profile.sub_specialty,
             organization_type=profile.organization_type,
@@ -87,8 +83,8 @@ def search_hcps(db: Session, query: str = None) -> List[HcpDetailResponse]:
             email_probability=model_out.email_probability if model_out else None,
             website_probability=model_out.website_probability if model_out else None,
             webinar_probability=model_out.webinar_probability if model_out else None,
-            veeva_probability=model_out.veeva_probability if model_out else None,
+            sales_rep_probability=model_out.sales_rep_probability if model_out else None,
             next_best_channel=model_out.next_best_channel if model_out else None,
-            recommendation_reason=model_out.recommendation_reason if model_out else None,
+            recommended_reason=model_out.recommended_reason if model_out else None,
         ))
     return results

@@ -1,64 +1,17 @@
 const API_BASE_URL = window.API_BASE_URL || localStorage.getItem('HCP_API_BASE_URL') || 'http://13.235.49.213:8000';
 let charts = [];
 let searchTimer;
-let isOfflineMode = false;
-const channels = ['Email', 'Website', 'Webinar', 'Veeva'];
-
-const MOCK_DASHBOARD = {
-  total_hcps: 1248,
-  high_engagement: 412,
-  medium_engagement: 586,
-  low_engagement: 250,
-  average_engagement_score: 78.4,
-  last_updated: new Date().toISOString(),
-  engagement_distribution: { High: 412, Medium: 586, Low: 250 },
-  score_distribution: { '0-20': 45, '21-40': 205, '41-60': 320, '61-80': 438, '81-100': 240 },
-  channel_effectiveness: { Email: 68, Website: 84, Webinar: 72, Veeva: 91 },
-  channel_allocation: { Email: 20, Website: 28, Webinar: 22, Veeva: 30 }
-};
-
-const MOCK_HCPS = [
-  { hcp_id: "HCP-1001", name: "Dr. Sarah Jenkins", specialty: "Cardiology", sub_specialty: "Interventional Cardiology", organization_type: "Academic Medical Center", city: "New York", state: "NY", country: "USA", hcp_status: "Active", preferred_language: "English", engagement_level: "High", historical_engagement_score: 82, predicted_engagement_score: 91, hybrid_engagement_score: 87, email_probability: 0.72, website_probability: 0.85, webinar_probability: 0.65, veeva_probability: 0.94, next_best_channel: "Veeva Rep Call", recommendation_reason: "High historical responsiveness to face-to-face Veeva detailings and upcoming clinical trial release." },
-  { hcp_id: "HCP-1002", name: "Dr. Marcus Chen", specialty: "Oncology", sub_specialty: "Thoracic Oncology", organization_type: "Cancer Care Network", city: "Boston", state: "MA", country: "USA", hcp_status: "Active", preferred_language: "English", engagement_level: "High", historical_engagement_score: 88, predicted_engagement_score: 95, hybrid_engagement_score: 92, email_probability: 0.64, website_probability: 0.89, webinar_probability: 0.91, veeva_probability: 0.78, next_best_channel: "Webinar", recommendation_reason: "Frequent attendee of peer-led oncology webinars with high completion rate." },
-  { hcp_id: "HCP-1003", name: "Dr. Elena Rostova", specialty: "Neurology", sub_specialty: "Multiple Sclerosis", organization_type: "Specialty Clinic", city: "Chicago", state: "IL", country: "USA", hcp_status: "Active", preferred_language: "English", engagement_level: "Medium", historical_engagement_score: 61, predicted_engagement_score: 74, hybrid_engagement_score: 68, email_probability: 0.81, website_probability: 0.70, webinar_probability: 0.45, veeva_probability: 0.52, next_best_channel: "Email Newsletter", recommendation_reason: "Prefers concise digital email updates over rep visits during clinic hours." },
-  { hcp_id: "HCP-1004", name: "Dr. James Wilson", specialty: "Endocrinology", sub_specialty: "Diabetes Care", organization_type: "Community Hospital", city: "Houston", state: "TX", country: "USA", hcp_status: "Active", preferred_language: "English", engagement_level: "Medium", historical_engagement_score: 55, predicted_engagement_score: 62, hybrid_engagement_score: 59, email_probability: 0.58, website_probability: 0.82, webinar_probability: 0.38, veeva_probability: 0.49, next_best_channel: "Website Portal", recommendation_reason: "Regularly accesses online dosing calculators and medical resources." },
-  { hcp_id: "HCP-1005", name: "Dr. Priya Patel", specialty: "Pediatrics", sub_specialty: "Pediatric Asthma", organization_type: "Children's Health System", city: "San Francisco", state: "CA", country: "USA", hcp_status: "Active", preferred_language: "English", engagement_level: "Low", historical_engagement_score: 34, predicted_engagement_score: 42, hybrid_engagement_score: 38, email_probability: 0.42, website_probability: 0.51, webinar_probability: 0.25, veeva_probability: 0.31, next_best_channel: "Email Spotlight", recommendation_reason: "Low baseline interaction; targeted email digests recommended." }
-];
+const channels = ['Email', 'Website', 'Webinar', 'Sales_Rep'];
 
 function updateSyncStatus(isLive) {
   const el = document.getElementById('apiStatusText');
   if (el) {
-    el.textContent = isLive ? 'API connected' : 'Demo Mode (Offline)';
+    el.textContent = isLive ? 'API connected' : 'Disconnected';
     el.style.color = isLive ? '' : '#e2b340';
   }
 }
 
-function handleMock(path) {
-  if (path.startsWith('/api/dashboard')) {
-    return MOCK_DASHBOARD;
-  }
-  if (path.startsWith('/api/hcps?query=')) {
-    const q = decodeURIComponent(path.split('query=')[1] || '').toLowerCase();
-    if (!q) return MOCK_HCPS;
-    return MOCK_HCPS.filter(h =>
-      (h.name && h.name.toLowerCase().includes(q)) ||
-      (h.hcp_id && h.hcp_id.toLowerCase().includes(q)) ||
-      (h.specialty && h.specialty.toLowerCase().includes(q))
-    );
-  }
-  if (path.startsWith('/api/hcps/')) {
-    const id = decodeURIComponent(path.replace('/api/hcps/', ''));
-    const found = MOCK_HCPS.find(h => h.hcp_id.toLowerCase() === id.toLowerCase()) || MOCK_HCPS[0];
-    return found;
-  }
-  return {};
-}
-
 async function api(path) {
-  if (isOfflineMode) {
-    updateSyncStatus(false);
-    return handleMock(path);
-  }
   try {
     const controller = new AbortController();
     const id = setTimeout(() => controller.abort(), 400);
@@ -69,9 +22,8 @@ async function api(path) {
     updateSyncStatus(true);
     return data;
   } catch (e) {
-    isOfflineMode = true;
     updateSyncStatus(false);
-    return handleMock(path);
+    throw e;
   }
 }
 
@@ -89,7 +41,7 @@ function renderKpis(d) {
     ['HIGH ENGAGEMENT', d.high_engagement, 'High engagement HCPs', '↗'],
     ['MEDIUM ENGAGEMENT', d.medium_engagement, 'Medium engagement HCPs', '≈'],
     ['LOW ENGAGEMENT', d.low_engagement, 'Low engagement HCPs', '↘'],
-    ['AVG HYBRID SCORE', d.average_engagement_score, 'Backend-calculated score', '⌁']
+    ['AVG HYBRID SCORE', (d.average_engagement_score * 100).toFixed(1), 'Backend-calculated score', '⌁']
   ];
   document.getElementById('kpis').innerHTML = data.map(([t, v, s, i]) => `
     <article class="card kpi">
@@ -194,7 +146,7 @@ function renderChannels(d) {
     return `
       <div class="channel-item">
         <div class="channel-top">
-          <span>${c}</span>
+          <span>${c.replace('_', ' ')}</span>
           <span>${v.toFixed(0)}%</span>
         </div>
         <div class="bar-track">
@@ -220,15 +172,14 @@ function render(d) {
 async function loadDashboard() {
   document.getElementById('errorBox').classList.add('hidden');
   document.getElementById('kpis').innerHTML = Array(5).fill('<article class="card kpi loading"><p>Loading</p><h2>000</h2></article>').join('');
-  let data = await api('/api/dashboard');
   
-  if (data && data.total_hcps === 0) {
-    // If the database is completely empty, fallback to demo mode so the UI isn't blank
-    data = handleMock('/api/dashboard');
-    updateSyncStatus(false); 
+  try {
+    let data = await api('/api/dashboard');
+    render(data);
+  } catch (e) {
+    document.getElementById('errorBox').classList.remove('hidden');
+    document.getElementById('kpis').innerHTML = Array(5).fill('<article class="card kpi"><p>Error</p><h2>—</h2></article>').join('');
   }
-  
-  render(data);
 }
 
 async function searchHcp(q) {
@@ -241,7 +192,7 @@ async function searchHcp(q) {
   const rows = Array.isArray(data) ? data : (data.items || data.results || []);
   box.innerHTML = rows.length ? rows.slice(0, 8).map(h => `
     <a class="search-item" href="hcp.html?id=${encodeURIComponent(h.hcp_id || h.HCP_ID)}">
-      <b>${h.name || `${h.first_name || ''} ${h.last_name || ''}`}</b><br>
+      <b>${h.first_name || ''} ${h.last_name || ''}</b><br>
       <small>${h.hcp_id || h.HCP_ID || ''} · ${h.specialty || ''}</small>
     </a>
   `).join('') : '<div class="search-item">No HCP found</div>';

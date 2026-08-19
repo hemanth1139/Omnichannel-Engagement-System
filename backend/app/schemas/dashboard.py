@@ -14,13 +14,13 @@ class ChannelEffectiveness(BaseModel):
     Email: float
     Website: float
     Webinar: float
-    Veeva: float
+    Sales_Rep: float
 
 class ChannelAllocation(BaseModel):
     Email: float
     Website: float
     Webinar: float
-    Veeva: float
+    Sales_Rep: float
 
 class DashboardResponse(BaseModel):
     total_hcps: int

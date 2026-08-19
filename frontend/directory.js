@@ -11,10 +11,8 @@ async function loadDirectory() {
     return;
   }
   
-  // If data is empty, handle fallback to mock data similar to dashboard
   if (!data || data.length === 0) {
-    data = handleMock('/api/hcps?query=');
-    updateSyncStatus(false);
+    updateSyncStatus(true);
   }
 
   renderDirectory(data);
@@ -28,8 +26,9 @@ function renderDirectory(hcps) {
   }
 
   grid.innerHTML = hcps.map(h => {
-    const initial = (h.name || 'H').charAt(0);
-    const score = num(h.hybrid_engagement_score).toFixed(0);
+    const fullName = `${h.first_name || ''} ${h.last_name || ''}`.trim() || 'Unknown HCP';
+    const initial = fullName.charAt(0);
+    const score = pct(h.hybrid_engagement_score).toFixed(0);
     const level = h.engagement_level || 'Unknown';
     const levelClass = level.toLowerCase();
     
@@ -38,7 +37,7 @@ function renderDirectory(hcps) {
         <div class="hcp-dir-header">
           <div class="hcp-dir-avatar">${initial}</div>
           <div class="hcp-dir-title">
-            <h3>${h.name || 'Unknown HCP'}</h3>
+            <h3>${fullName}</h3>
             <p>${h.specialty || 'General Practice'}</p>
           </div>
         </div>
