@@ -6,60 +6,51 @@
   <title>HCP Directory | HCP Intelligence</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 <div class="sidebar-overlay" id="sidebarOverlay"></div>
-<div class="app-shell">
-<aside class="sidebar" id="sidebar">
-  <div class="brand">
-    <img src="logo.png" alt="OES Logo" class="brand-logo" />
-    <div class="brand-text">
-      <h2>Omnichannel Engagement System</h2>
+
+<!-- MediElite Top Navigation -->
+<header class="medielite-navbar">
+  <div class="nav-container">
+    <div class="brand">
+      <img src="logo.png" alt="OES Logo" class="brand-logo" />
+      <div class="brand-text">
+        <h2>Omnichannel Engagement System</h2>
+      </div>
+    </div>
+    
+    <nav class="top-nav" id="sidebarNav">
+      <a href="index.html#overview">Overview +</a>
+      <a href="index.html#engagement">Engagement +</a>
+      <a href="index.html#channels">Channels +</a>
+      <a class="active" href="directory.html">Directory +</a>
+    </nav>
+    
+    <div class="nav-actions">
+      <button class="pill-btn cyan" id="refreshDirectoryBtn">Refresh <span class="arrow-circle">→</span></button>
+      <button id="mobileMenuBtn" class="mobile-menu-btn" aria-label="Toggle Menu">☰</button>
     </div>
   </div>
+</header>
 
-  <nav id="sidebarNav">
-    <a href="index.html#overview">
-      <span class="nav-icon">▦</span><span class="nav-label">Dashboard Overview</span>
-    </a>
-    <a href="index.html#engagement">
-      <span class="nav-icon">◔</span><span class="nav-label">Engagement Analytics</span>
-    </a>
-    <a href="index.html#channels">
-      <span class="nav-icon">⌁</span><span class="nav-label">Channel Analytics</span>
-    </a>
-    <a class="active" href="directory.html">
-      <span class="nav-icon">👥</span><span class="nav-label">HCP Directory</span>
-    </a>
-  </nav>
-
-  <div class="sidebar-bottom">
-    <p class="menu-title">SYSTEM</p>
-    <button id="refreshDirectoryBtn" class="side-button">
-      <span class="nav-icon" style="font-size:15px">↻</span>
-      <span class="side-label">Refresh data</span>
-    </button>
-  </div>
-</aside>
-
-<main class="main">
-  <header class="topbar">
-    <button id="mobileMenuBtn" class="mobile-menu-btn" aria-label="Toggle Menu">☰</button>
-    <div class="search-wrap">
-      <span>⌕</span>
+<main class="main-content">
+  <!-- Large Search Bar Component -->
+  <div class="search-container" style="margin-top: 40px;">
+    <div class="search-wrap-large">
+      <span class="search-icon">⌕</span>
       <input id="hcpSearch" placeholder="Search HCP by name or HCP ID..." autocomplete="off">
       <div id="searchResults" class="search-results"></div>
     </div>
-  </header>
+  </div>
 
   <section class="hero" id="overview">
-    <div>
-      <div class="pill">✧ Directory</div>
-      <h1>HCP Directory</h1>
-      <p>Browse all registered healthcare professionals, view their core details, and access full predictive engagement profiles.</p>
+    <div style="text-align: center; margin-bottom: 40px;">
+      <h1 style="font-size: 42px;">HCP Directory</h1>
+      <p style="margin: 0 auto; max-width: 600px;">Browse all registered healthcare professionals, view their core details, and access full predictive engagement profiles.</p>
     </div>
   </section>
 
@@ -70,12 +61,11 @@
       <!-- Cards will be dynamically injected here -->
     </div>
     <div style="text-align: center; margin: 40px 0;">
-      <button id="loadMoreBtn" class="side-button hidden" onclick="loadMore()" style="padding: 12px 24px; font-size: 14px; margin: 0 auto; display: inline-block;">Load More HCPs</button>
+      <button id="loadMoreBtn" class="pill-btn dark hidden" onclick="loadMore()">Load More HCPs <span class="arrow-circle">↓</span></button>
     </div>
   </section>
 
 </main>
-</div>
 <script src="script.js"></script>
 <script src="directory.js"></script>
 </body>

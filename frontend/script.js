@@ -44,10 +44,14 @@ function renderKpis(d) {
     ['AVG HYBRID SCORE', num(d.average_engagement_score).toFixed(1), 'Backend-calculated score', '⌁']
   ];
   document.getElementById('kpis').innerHTML = data.map(([t, v, s, i]) => `
-    <article class="card kpi">
-      <p>${t}</p>
-      <h2>${v ?? '—'}</h2>
-      <small>${s}</small>
+    <article class="medielite-card kpi">
+      <div class="card-icon">${i}</div>
+      <h3>${t}</h3>
+      <p>${s}</p>
+      <hr class="dashed-line">
+      <div class="card-bottom" style="justify-content: flex-start; font-size: 24px; font-weight: 800;">
+        <span style="font-size: 14px; margin-right: 8px;">●</span> ${v ?? '—'}
+      </div>
     </article>
   `).join('');
 }
@@ -64,7 +68,7 @@ function makeCharts(d) {
         labels: Object.keys(dist),
         datasets: [{
           data: Object.values(dist),
-          backgroundColor: ['#5542a5', '#7c88c8', '#d6dbe8'],
+          backgroundColor: ['#061a3a', '#00c2cb', '#e2e8f0'],
           borderWidth: 0,
           borderRadius: 6
         }]
@@ -97,7 +101,7 @@ function makeCharts(d) {
         datasets: [{
           label: 'HCP count',
           data: scoreValues,
-          backgroundColor: '#5c61b8',
+          backgroundColor: '#00c2cb',
           borderRadius: 9,
           borderSkipped: false
         }]
@@ -122,8 +126,8 @@ function makeCharts(d) {
       data: {
         labels: channels,
         datasets: [
-          { label: 'Baseline Spend', data: [25, 25, 25, 25], backgroundColor: '#bcb5df', borderRadius: 7 },
-          { label: 'Optimized Cost', data: channels.map(c => pct(alloc[c] ?? alloc[c.toLowerCase()])), backgroundColor: '#ffffff', borderRadius: 7 }
+          { label: 'Baseline Spend', data: [25, 25, 25, 25], backgroundColor: '#e2e8f0', borderRadius: 7 },
+          { label: 'Optimized Cost', data: channels.map(c => pct(alloc[c] ?? alloc[c.toLowerCase()])), backgroundColor: '#00c2cb', borderRadius: 7 }
         ]
       },
       options: {
@@ -167,18 +171,27 @@ function render(d) {
   if (lastUpdatedEl) {
     lastUpdatedEl.textContent = d.last_updated ? `Updated ${new Date(d.last_updated).toLocaleTimeString()}` : 'Data updated';
   }
+  
+  const heroStatCount = document.getElementById('heroStatCount');
+  if (heroStatCount) heroStatCount.textContent = d.total_hcps;
+
+  const heroStatPercent = document.getElementById('heroStatPercent');
+  if (heroStatPercent) {
+    const highPct = d.total_hcps > 0 ? (d.high_engagement / d.total_hcps) * 100 : 0;
+    heroStatPercent.textContent = Math.round(highPct) + '%';
+  }
 }
 
 async function loadDashboard() {
   document.getElementById('errorBox').classList.add('hidden');
-  document.getElementById('kpis').innerHTML = Array(5).fill('<article class="card kpi loading"><p>Loading</p><h2>000</h2></article>').join('');
+  document.getElementById('kpis').innerHTML = Array(5).fill('<article class="medielite-card kpi loading"><h3>Loading</h3></article>').join('');
 
   try {
     let data = await api('/api/dashboard');
     render(data);
   } catch (e) {
     document.getElementById('errorBox').classList.remove('hidden');
-    document.getElementById('kpis').innerHTML = Array(5).fill('<article class="card kpi"><p>Error</p><h2>—</h2></article>').join('');
+    document.getElementById('kpis').innerHTML = Array(5).fill('<article class="medielite-card kpi"><h3>Error</h3></article>').join('');
   }
 }
 

@@ -1,1 +1,84 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>HCP Details | HCP Intelligence</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="style.css"><script src="https://cdn.jsdelivr.net/npm/chart.js"></script></head><body><div class="detail-shell"><header class="detail-top"><a href="javascript:history.back()">← Back</a><div class="brand"><img src="logo.png" alt="OES Logo" class="brand-logo" /><div class="brand-text"><h2>Omnichannel Engagement System</h2></div></div></header><main class="detail-main"><div id="detailError" class="error hidden">Unable to load data. <button onclick="loadHcp()">Retry</button></div><section class="profile-banner"><div class="avatar" id="avatar">H</div><div><p class="eyebrow">HCP PROFILE</p><h1 id="hcpName">Loading...</h1><span id="hcpId"></span></div><span id="levelBadge" class="level-badge">Loading</span></section><section class="detail-grid"><article class="card profile-card"><h3>Profile Information</h3><div id="profileInfo" class="info-grid skeleton-lines"></div></article><article class="card"><h3>Engagement Summary</h3><div id="summary" class="summary-grid"></div><div class="mini-chart"><canvas id="comparisonChart"></canvas></div></article></section><section class="detail-grid"><article class="card"><h3>Channel Probabilities</h3><div id="probabilities" class="probabilities"></div></article><article class="recommendation"><p class="eyebrow">✧ RECOMMENDATION</p><h3>Next Best Channel</h3><div class="best-channel" id="bestChannel">—</div><p class="reason-title">Recommended Reason</p><p id="reason">Loading recommendation...</p></article></section></main></div><script src="hcp.js"></script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HCP Details | HCP Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<!-- MediElite Top Navigation -->
+<header class="medielite-navbar">
+  <div class="nav-container">
+    <div class="brand">
+      <img src="logo.png" alt="OES Logo" class="brand-logo" />
+      <div class="brand-text">
+        <h2>Omnichannel Engagement System</h2>
+      </div>
+    </div>
+    
+    <nav class="top-nav" id="sidebarNav">
+      <a href="index.html#overview">Overview +</a>
+      <a href="index.html#engagement">Engagement +</a>
+      <a href="index.html#channels">Channels +</a>
+      <a href="directory.html">Directory +</a>
+    </nav>
+    
+    <div class="nav-actions">
+      <a href="javascript:history.back()" class="pill-btn dark">Back <span class="arrow-circle">←</span></a>
+    </div>
+  </div>
+</header>
+
+<div class="detail-shell">
+<main class="main-content detail-main" style="padding-top: 40px;">
+<div id="detailError" class="error hidden">Unable to load data. <button onclick="loadHcp()">Retry</button></div>
+
+<section class="profile-banner">
+<div class="avatar" id="avatar">H</div>
+<div><p class="eyebrow" style="color: var(--accent); font-weight: 700; margin: 0 0 5px; font-size: 12px;">HCP PROFILE</p><h1 id="hcpName" style="font-size: 32px; margin-bottom: 5px;">Loading...</h1><span id="hcpId"></span></div>
+<span id="levelBadge" class="level-badge" style="margin-left: auto; background: #eef8f4; color: #20866f; padding: 8px 16px; border-radius: 999px; font-weight: 700;">Loading</span>
+</section>
+
+<section class="detail-grid" style="display: grid; grid-template-columns: 1.1fr 1fr; gap: 30px; margin-bottom: 30px;">
+<article class="medielite-card profile-card">
+  <h3>Profile Information</h3>
+  <hr class="dashed-line">
+  <div id="profileInfo" class="info-grid skeleton-lines"></div>
+</article>
+
+<article class="medielite-card">
+  <h3>Engagement Summary</h3>
+  <hr class="dashed-line">
+  <div id="summary" class="summary-grid"></div>
+  <div class="mini-chart"><canvas id="comparisonChart"></canvas></div>
+</article>
+</section>
+
+<section class="detail-grid" style="display: grid; grid-template-columns: 1.1fr 1fr; gap: 30px;">
+<article class="medielite-card">
+  <h3>Channel Probabilities</h3>
+  <hr class="dashed-line">
+  <div id="probabilities" class="probabilities"></div>
+</article>
+
+<article class="recommendation" style="background: var(--primary); border-radius: 24px; padding: 30px; color: #fff;">
+  <p class="eyebrow" style="color: var(--accent); font-weight: 700; font-size: 12px; margin-bottom: 10px;">✧ RECOMMENDATION</p>
+  <h3 style="color: #fff; margin-bottom: 15px;">Next Best Channel</h3>
+  <div class="best-channel" id="bestChannel" style="font-size: 42px; font-weight: 800; margin-bottom: 20px;">—</div>
+  <p class="reason-title" style="font-size: 11px; font-weight: 700; color: #a4b3ca; margin-bottom: 5px;">RECOMMENDED REASON</p>
+  <p id="reason" style="color: #e2e8f0;">Loading recommendation...</p>
+</article>
+</section>
+
+</main>
+</div>
+<script src="script.js"></script>
+<script src="hcp.js"></script>
+</body>
+</html>
