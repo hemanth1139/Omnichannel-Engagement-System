@@ -41,7 +41,7 @@ button { font-family: inherit; cursor: pointer; border: none; }
   box-shadow: 0 4px 20px rgba(0,0,0,0.1);
 }
 .nav-container {
-  max-width: 1400px;
+  max-width: 1500px;
   margin: 0 auto;
   height: 100%;
   display: flex;
@@ -134,7 +134,7 @@ button { font-family: inherit; cursor: pointer; border: none; }
 
 /* ── Hero Section ───────────────────────────────────────── */
 .main-content {
-  max-width: 1300px;
+  max-width: 1500px;
   margin: 0 auto;
   padding: 0 4% 60px;
 }
@@ -345,10 +345,12 @@ button { font-family: inherit; cursor: pointer; border: none; }
 
 /* ── HCP Directory & Profile ────────────────────────────── */
 .directory-container { padding: 40px 0; }
-.directory-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; }
-.hcp-dir-card { display: flex; flex-direction: column; cursor: pointer; text-decoration: none; color: inherit; }
+.directory-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; }
+.hcp-dir-card { display: flex; flex-direction: column; cursor: pointer; text-decoration: none; color: inherit; padding: 24px; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+.hcp-dir-card:hover { transform: translateY(-8px); box-shadow: 0 24px 48px rgba(6, 26, 58, 0.12); border-color: var(--accent); }
 .hcp-dir-header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
-.hcp-dir-avatar { width: 56px; height: 56px; border-radius: 16px; background: #f0fcfe; color: var(--accent); display: grid; place-items: center; font-size: 24px; font-weight: bold; }
+.hcp-dir-avatar { width: 56px; height: 56px; border-radius: 16px; background: #f0fcfe; color: var(--accent); display: grid; place-items: center; font-size: 24px; font-weight: bold; transition: all 0.4s ease; }
+.hcp-dir-card:hover .hcp-dir-avatar { background: var(--accent); color: #fff; transform: scale(1.05) rotate(-5deg); }
 .hcp-dir-body { display: grid; gap: 10px; margin-bottom: 20px; }
 .dir-info { display: flex; justify-content: space-between; border-bottom: 1px dashed var(--line); padding-bottom: 10px; font-size: 14px; }
 .hcp-dir-footer { display: flex; justify-content: space-between; align-items: flex-end; margin-top: auto; padding-top: 20px; }
