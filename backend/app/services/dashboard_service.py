@@ -103,7 +103,11 @@ def get_dashboard_data(db: Session) -> DashboardResponse:
         engagement_distribution=EngagementDistribution(**eng_dist),
         score_distribution=score_dist_items,
         channel_effectiveness=ChannelEffectiveness(
-            Email=email_avg, Website=website_avg, Webinar=webinar_avg, Sales_Rep=sales_rep_avg
+            # Normalize so all 4 channels sum to 100%
+            Email=round(email_alloc * 100, 1),
+            Website=round(website_alloc * 100, 1),
+            Webinar=round(webinar_alloc * 100, 1),
+            Sales_Rep=round(sales_rep_alloc * 100, 1)
         ),
         channel_allocation=ChannelAllocation(
             Email=email_alloc, Website=website_alloc, Webinar=webinar_alloc, Sales_Rep=sales_rep_alloc
