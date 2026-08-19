@@ -23,7 +23,7 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             # 1. Navigate to the repository folder on the server
-            cd /home/ec2-user/your-existing-repo
+            cd /home/ec2-user/Omnichannel-Engagement-System
             
             # 2. Pull the latest code from GitHub
             git pull origin main
