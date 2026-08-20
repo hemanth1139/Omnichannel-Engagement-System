@@ -98,7 +98,7 @@ def search_hcps(db: Session, query: str = None, skip: int = 0, limit: int = 50) 
     return results
 
 def generate_all_hcps_pdf(db: Session) -> io.BytesIO:
-    hcps = get_hcp_list(db, skip=0, limit=10000)
+    hcps = search_hcps(db, query=None, skip=0, limit=10000)
     
     buffer = io.BytesIO()
     doc = SimpleDocTemplate(buffer, pagesize=letter, rightMargin=30, leftMargin=30, topMargin=30, bottomMargin=18)
