@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends
-from fastapi.responses import StreamingResponse
+from fastapi.responses import Response
 from sqlalchemy.orm import Session
 from typing import List, Optional
 from app.db.database import get_db
@@ -21,8 +21,8 @@ def export_all_hcps_pdf(db: Session = Depends(get_db)):
     Export all HCPs to a PDF file.
     """
     pdf_buffer = generate_all_hcps_pdf(db)
-    return StreamingResponse(
-        pdf_buffer, 
+    return Response(
+        content=pdf_buffer.getvalue(), 
         media_type="application/pdf", 
         headers={"Content-Disposition": "attachment; filename=All_HCPs_Report.pdf"}
     )
