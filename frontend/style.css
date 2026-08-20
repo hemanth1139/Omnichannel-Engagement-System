@@ -132,6 +132,73 @@ button { font-family: inherit; cursor: pointer; border: none; }
 }
 .pill-btn.cyan .arrow-circle { color: var(--accent); }
 
+/* ── Innovative Refresh Button ─────────────────────────── */
+.refresh-btn {
+  position: relative;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: rgba(0, 194, 203, 0.15);
+  border: 2px solid rgba(0, 194, 203, 0.5);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  outline: none;
+  box-shadow: 0 0 0 0 rgba(0, 194, 203, 0.4);
+}
+.refresh-btn:hover {
+  background: rgba(0, 194, 203, 0.28);
+  border-color: var(--accent);
+  transform: scale(1.12);
+  box-shadow: 0 0 0 8px rgba(0, 194, 203, 0.12), 0 0 20px rgba(0, 194, 203, 0.35);
+}
+.refresh-btn:active { transform: scale(0.95); }
+
+/* SVG icon inside */
+.refresh-svg {
+  width: 18px;
+  height: 18px;
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.refresh-btn:hover .refresh-svg { transform: rotate(180deg); }
+
+/* Pulsing live dot */
+.refresh-live-dot {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 9px;
+  height: 9px;
+  background: #22d47a;
+  border-radius: 50%;
+  border: 2px solid var(--primary);
+  animation: livePulse 2s ease-in-out infinite;
+}
+@keyframes livePulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(34, 212, 122, 0.6); }
+  50%       { box-shadow: 0 0 0 5px rgba(34, 212, 122, 0); }
+}
+
+/* Loading state */
+.refresh-btn.loading {
+  pointer-events: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 6px rgba(0, 194, 203, 0.15);
+}
+.refresh-btn.loading .refresh-svg { animation: spin 0.8s linear infinite; }
+.refresh-btn.loading .refresh-live-dot {
+  background: #f59e0b;
+  animation: livePulse 0.5s ease-in-out infinite;
+}
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+
 /* ── Hero Section ─ Full Viewport Background Image ──────── */
 .main-content {
   /* No max-width/padding so hero is truly full width */
@@ -152,6 +219,8 @@ button { font-family: inherit; cursor: pointer; border: none; }
   justify-content: center;
   overflow: hidden;
 }
+
+/* No bottom fade — image shows fully to its edge */
 
 /* Full-bleed background image */
 .hero-bg-image {
@@ -222,9 +291,9 @@ button { font-family: inherit; cursor: pointer; border: none; }
   display: flex;
   align-items: center;
   gap: 14px;
-  background: rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(14px);
-  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.38);
   border-radius: 18px;
   padding: 16px 26px;
   animation: floatUpDown 6s ease-in-out infinite;
@@ -473,3 +542,11 @@ button { font-family: inherit; cursor: pointer; border: none; }
   box-sizing: border-box;
 }
 .kpi-grid { margin-bottom: 50px; }
+
+/* Overview section: clear separation from the hero */
+#overview {
+  padding-top: 60px;
+  background: var(--bg);
+  position: relative;
+  z-index: 4;
+}

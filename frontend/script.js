@@ -182,6 +182,8 @@ function render(d) {
 }
 
 async function loadDashboard() {
+  const btn = document.getElementById('refreshBtn');
+  if (btn) btn.classList.add('loading');
   document.getElementById('errorBox').classList.add('hidden');
   document.getElementById('kpis').innerHTML = Array(5).fill('<article class="medielite-card kpi loading"><h3>Loading</h3></article>').join('');
 
@@ -191,6 +193,8 @@ async function loadDashboard() {
   } catch (e) {
     document.getElementById('errorBox').classList.remove('hidden');
     document.getElementById('kpis').innerHTML = Array(5).fill('<article class="medielite-card kpi"><h3>Error</h3></article>').join('');
+  } finally {
+    if (btn) btn.classList.remove('loading');
   }
 }
 
