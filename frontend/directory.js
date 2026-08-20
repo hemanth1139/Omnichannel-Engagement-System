@@ -5,6 +5,12 @@ let allHcps = [];
 let activeNbc = 'all';
 let activeLevel = 'all';
 
+// Set Export PDF URL dynamically based on current API base
+const exportBtn = document.getElementById('exportPdfBtn');
+if (exportBtn) {
+  exportBtn.href = `${API_BASE_URL}/api/hcps/export/pdf`;
+}
+
 async function loadDirectory(reset = true) {
   document.getElementById('directoryErrorBox').classList.add('hidden');
   const grid = document.getElementById('directoryGrid');
