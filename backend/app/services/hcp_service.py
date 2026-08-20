@@ -152,3 +152,97 @@ def generate_all_hcps_pdf(db: Session) -> io.BytesIO:
     
     buffer.seek(0)
     return buffer
+
+def generate_single_hcp_pdf(db: Session, hcp_id: str) -> io.BytesIO:
+    hcp = get_hcp_by_id(db, hcp_id)
+    
+    buffer = io.BytesIO()
+    doc = SimpleDocTemplate(buffer, pagesize=letter, rightMargin=40, leftMargin=40, topMargin=40, bottomMargin=30)
+    
+    elements = []
+    styles = getSampleStyleSheet()
+    
+    # Custom styles
+    title_style = styles['Title']
+    title_style.textColor = colors.HexColor("#061a3a")
+    
+    h2_style = styles['Heading2']
+    h2_style.textColor = colors.HexColor("#00c2cb")
+    h2_style.spaceBefore = 15
+    h2_style.spaceAfter = 10
+    
+    normal = styles['Normal']
+    normal.fontSize = 11
+    normal.leading = 14
+    
+    # 1. Header
+    name = f"{hcp.first_name or ''} {hcp.last_name or ''}".strip()
+    elements.append(Paragraph(name, title_style))
+    elements.append(Paragraph(f"<b>HCP ID:</b> {hcp.hcp_id} | <b>Specialty:</b> {hcp.specialty}", normal))
+    elements.append(Paragraph("<br/>", normal))
+    
+    # 2. Profile Information
+    elements.append(Paragraph("Profile Information", h2_style))
+    profile_data = [
+        ['Organization Type:', hcp.organization_type or 'N/A'],
+        ['Location:', f"{hcp.city or ''}, {hcp.state or ''}, {hcp.country or ''}".strip(', ')],
+        ['Status:', hcp.hcp_status or 'N/A'],
+        ['Preferred Language:', hcp.preferred_language or 'N/A']
+    ]
+    t1 = Table(profile_data, colWidths=[150, 350])
+    t1.setStyle(TableStyle([
+        ('FONTNAME', (0,0), (0,-1), 'Helvetica-Bold'),
+        ('TEXTCOLOR', (0,0), (-1,-1), colors.HexColor("#0f172a")),
+        ('ALIGN', (0,0), (-1,-1), 'LEFT'),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 8),
+    ]))
+    elements.append(t1)
+    
+    # 3. Engagement Summary
+    elements.append(Paragraph("<br/>", normal))
+    elements.append(Paragraph("Engagement Summary", h2_style))
+    
+    score = f"{hcp.hybrid_engagement_score:.0f}%" if hcp.hybrid_engagement_score else "N/A"
+    eng_data = [
+        ['Engagement Level:', hcp.engagement_level or 'N/A'],
+        ['Hybrid Engagement Score:', score],
+        ['Historical Score:', f"{hcp.historical_engagement_score or 0:.0f}%"],
+        ['Predicted Score:', f"{hcp.predicted_engagement_score or 0:.0f}%"]
+    ]
+    t2 = Table(eng_data, colWidths=[150, 350])
+    t2.setStyle(TableStyle([
+        ('FONTNAME', (0,0), (0,-1), 'Helvetica-Bold'),
+        ('TEXTCOLOR', (0,0), (-1,-1), colors.HexColor("#0f172a")),
+        ('ALIGN', (0,0), (-1,-1), 'LEFT'),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 8),
+    ]))
+    elements.append(t2)
+    
+    # 4. Channel Probabilities
+    elements.append(Paragraph("<br/>", normal))
+    elements.append(Paragraph("Channel Probabilities", h2_style))
+    
+    chan_data = [
+        ['Email', f"{hcp.email_probability or 0:.0f}%"],
+        ['Website', f"{hcp.website_probability or 0:.0f}%"],
+        ['Webinar', f"{hcp.webinar_probability or 0:.0f}%"],
+        ['Sales Rep', f"{hcp.sales_rep_probability or 0:.0f}%"]
+    ]
+    t3 = Table(chan_data, colWidths=[150, 100])
+    t3.setStyle(TableStyle([
+        ('FONTNAME', (0,0), (0,-1), 'Helvetica-Bold'),
+        ('TEXTCOLOR', (0,0), (-1,-1), colors.HexColor("#0f172a")),
+        ('ALIGN', (0,0), (-1,-1), 'LEFT'),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 8),
+    ]))
+    elements.append(t3)
+    
+    # 5. Next Best Channel
+    elements.append(Paragraph("<br/>", normal))
+    elements.append(Paragraph("Next Best Channel Recommendation", h2_style))
+    elements.append(Paragraph(f"<b>Channel:</b> {hcp.next_best_channel or 'N/A'}", normal))
+    elements.append(Paragraph(f"<b>Reason:</b> {hcp.recommended_reason or 'N/A'}", normal))
+    
+    doc.build(elements)
+    buffer.seek(0)
+    return buffer
