@@ -77,12 +77,6 @@ async function loadHcp() {
   document.getElementById('detailError').classList.add('hidden');
   const id = new URLSearchParams(location.search).get('id') || 'HCP-1001';
   
-  // Set export PDF link
-  const exportBtn = document.getElementById('exportPdfBtn');
-  if (exportBtn) {
-    exportBtn.href = `${API_BASE_URL}/api/hcps/${encodeURIComponent(id)}/export/pdf`;
-  }
-  
   try {
     const data = await api(`/api/hcps/${encodeURIComponent(id)}`);
     render(data);
