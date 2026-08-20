@@ -261,9 +261,9 @@ function initNavigation() {
     });
   });
 
-  const navSectionIds = ['overview', 'engagement', 'channels', 'allocation'];
+  const navSectionIds = ['home', 'overview', 'engagement', 'channels', 'allocation'];
   window.addEventListener('scroll', () => {
-    let currentId = 'overview';
+    let currentId = 'home';
     for (let i = navSectionIds.length - 1; i >= 0; i--) {
       const id = navSectionIds[i];
       const sec = document.getElementById(id);
