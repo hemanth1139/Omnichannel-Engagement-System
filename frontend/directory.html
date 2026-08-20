@@ -46,28 +46,54 @@
 </header>
 
 <main class="main-content">
-  <!-- Large Search Bar Component -->
-  <div class="search-container" style="margin-top: 40px;">
-    <div class="search-wrap-large">
-      <span class="search-icon">⌕</span>
-      <input id="hcpSearch" placeholder="Search HCP by name or HCP ID..." autocomplete="off">
-      <div id="searchResults" class="search-results"></div>
-    </div>
-  </div>
 
-  <section class="hero" id="overview">
-    <div style="text-align: center; margin-bottom: 40px;">
-      <h1 style="font-size: 42px;">HCP Directory</h1>
-      <p style="margin: 0 auto; max-width: 600px;">Browse all registered healthcare professionals, view their core details, and access full predictive engagement profiles.</p>
+  <!-- Directory Header: Title left, Search right -->
+  <div class="dir-header-block">
+
+    <!-- Top row: title left, search right -->
+    <div class="dir-top-row">
+      <div class="dir-title-row">
+        <h1 class="dir-title">HCP Directory</h1>
+        <p class="dir-subtitle">Browse all registered healthcare professionals and access full predictive engagement profiles.</p>
+      </div>
+      <div class="search-wrap-large dir-search">
+        <span class="search-icon">⌕</span>
+        <input id="hcpSearch" placeholder="Search HCP by name or HCP ID..." autocomplete="off">
+        <div id="searchResults" class="search-results"></div>
+      </div>
     </div>
-  </section>
+
+    <!-- Filters: full-width row below -->
+    <div class="filter-bar">
+      <div class="filter-group">
+        <span class="filter-label">Next Best Channel</span>
+        <div class="filter-chips" id="nbcFilters">
+          <button class="chip active" data-nbc="all">All</button>
+          <button class="chip" data-nbc="Email">Email</button>
+          <button class="chip" data-nbc="Website">Website</button>
+          <button class="chip" data-nbc="Webinar">Webinar</button>
+          <button class="chip" data-nbc="Sales_Rep">Sales Rep</button>
+        </div>
+      </div>
+      <div class="filter-divider"></div>
+      <div class="filter-group">
+        <span class="filter-label">Engagement Level</span>
+        <div class="filter-chips" id="levelFilters">
+          <button class="chip active" data-level="all">All</button>
+          <button class="chip chip-high" data-level="High">High</button>
+          <button class="chip chip-medium" data-level="Medium">Medium</button>
+          <button class="chip chip-low" data-level="Low">Low</button>
+        </div>
+      </div>
+      <span class="filter-results-count" id="filterCount"></span>
+    </div>
+
+  </div>
 
   <section id="directoryErrorBox" class="error hidden">Unable to load data. <button onclick="loadDirectory()">Retry</button></section>
 
   <section class="directory-container">
-    <div class="directory-grid" id="directoryGrid">
-      <!-- Cards will be dynamically injected here -->
-    </div>
+    <div class="directory-grid" id="directoryGrid"></div>
     <div style="text-align: center; margin: 40px 0;">
       <button id="loadMoreBtn" class="pill-btn dark hidden" onclick="loadMore()">Load More HCPs <span class="arrow-circle">↓</span></button>
     </div>

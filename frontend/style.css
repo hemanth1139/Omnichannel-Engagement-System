@@ -550,3 +550,115 @@ button { font-family: inherit; cursor: pointer; border: none; }
   position: relative;
   z-index: 4;
 }
+
+/* ── Directory Header Block ─────────────────────────────── */
+.dir-header-block {
+  padding: 32px 4% 0;
+  max-width: 1500px;
+  margin: 0 auto;
+}
+/* Directory top row: title left, search right */
+.dir-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+  margin-bottom: 16px;
+}
+.dir-title-row {
+  flex-shrink: 0;
+}
+.dir-title {
+  font-size: 32px;
+  color: var(--primary);
+  margin-bottom: 6px;
+  text-align: left;
+}
+.dir-subtitle {
+  color: var(--muted);
+  font-size: 14px;
+  max-width: 420px;
+  text-align: left;
+  margin: 0;
+}
+.dir-search {
+  flex: 1;
+  max-width: 680px;
+  margin: 0;
+}
+
+/* ── Filter Bar ─────────────────────────────────────────── */
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 14px 22px;
+  margin-bottom: 28px;
+}
+.filter-divider {
+  width: 1px;
+  height: 28px;
+  background: var(--line);
+  flex-shrink: 0;
+}
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.filter-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+.filter-chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.chip {
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  border: 1.5px solid var(--line);
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+.chip:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.chip.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+.chip-high.active  { background: #20866f; border-color: #20866f; }
+.chip-medium.active { background: #d97706; border-color: #d97706; }
+.chip-low.active   { background: #dc2626; border-color: #dc2626; }
+
+.filter-results-count {
+  margin-left: auto;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+/* NBC tag inside HCP cards */
+.nbc-tag {
+  color: var(--accent);
+  font-weight: 700;
+}
