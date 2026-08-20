@@ -19,6 +19,7 @@ function loadChart(h) {
     options: {
       responsive: true,
       maintainAspectRatio: false,
+      animation: false, // Ensure chart renders instantly for PDF export
       plugins: { legend: { display: false } },
       scales: {
         x: { grid: { display: false } },
@@ -84,4 +85,5 @@ async function loadHcp() {
 }
 
 loadHcp();
+
 

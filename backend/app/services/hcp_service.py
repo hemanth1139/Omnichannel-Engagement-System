@@ -2,6 +2,14 @@ from sqlalchemy.orm import Session
 from fastapi import HTTPException
 from app.db.models import HCPProfile, ModelOutput
 from app.schemas.hcp import HcpDetailResponse
+import io
+try:
+    from reportlab.lib import colors
+    from reportlab.lib.pagesizes import letter, landscape
+    from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph
+    from reportlab.lib.styles import getSampleStyleSheet
+except ImportError:
+    pass # Handled in requirements
 
 def get_hcp_by_id(db: Session, hcp_id: str) -> HcpDetailResponse:
     record = (
@@ -88,3 +96,59 @@ def search_hcps(db: Session, query: str = None, skip: int = 0, limit: int = 50) 
             recommended_reason=model_out.recommended_reason if model_out else None,
         ))
     return results
+
+def generate_all_hcps_pdf(db: Session) -> io.BytesIO:
+    hcps = get_hcp_list(db, skip=0, limit=10000)
+    
+    buffer = io.BytesIO()
+    doc = SimpleDocTemplate(buffer, pagesize=letter, rightMargin=30, leftMargin=30, topMargin=30, bottomMargin=18)
+    
+    elements = []
+    
+    styles = getSampleStyleSheet()
+    title = Paragraph("HCP Directory Report", styles['Title'])
+    elements.append(title)
+    
+    # Define table data
+    data = [['HCP ID', 'Name', 'Engagement Score', 'Next Best Channel']]
+    
+    for hcp in hcps:
+        name = f"{hcp.first_name or ''} {hcp.last_name or ''}".strip()
+        score = f"{hcp.hybrid_engagement_score:.0f}%" if hcp.hybrid_engagement_score else "N/A"
+        nbc = hcp.next_best_channel or "N/A"
+        
+        data.append([hcp.hcp_id, name, score, nbc])
+        
+    table = Table(data, repeatRows=1)
+    
+    style = TableStyle([
+        ('BACKGROUND', (0,0), (-1,0), colors.HexColor("#061a3a")),
+        ('TEXTCOLOR', (0,0), (-1,0), colors.whitesmoke),
+        ('ALIGN', (0,0), (-1,-1), 'CENTER'),
+        ('FONTNAME', (0,0), (-1,0), 'Helvetica-Bold'),
+        ('FONTSIZE', (0,0), (-1,0), 12),
+        ('BOTTOMPADDING', (0,0), (-1,0), 12),
+        ('BACKGROUND', (0,1), (-1,-1), colors.beige),
+        ('TEXTCOLOR', (0,1), (-1,-1), colors.black),
+        ('ALIGN', (0,0), (-1,-1), 'CENTER'),
+        ('FONTNAME', (0,1), (-1,-1), 'Helvetica'),
+        ('FONTSIZE', (0,1), (-1,-1), 10),
+        ('TOPPADDING', (0,1), (-1,-1), 6),
+        ('BOTTOMPADDING', (0,1), (-1,-1), 6),
+        ('GRID', (0,0), (-1,-1), 1, colors.black)
+    ])
+    table.setStyle(style)
+    
+    # Alternate row colors
+    for i in range(1, len(data)):
+        if i % 2 == 0:
+            bg_color = colors.HexColor("#f5f9fc")
+        else:
+            bg_color = colors.white
+        table.setStyle(TableStyle([('BACKGROUND', (0, i), (-1, i), bg_color)]))
+
+    elements.append(table)
+    doc.build(elements)
+    
+    buffer.seek(0)
+    return buffer
